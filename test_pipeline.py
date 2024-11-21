@@ -1,16 +1,16 @@
 import subprocess
 
 def test_pipeline():
-    # Train the model
+    print("Starting training...")
     subprocess.run(["python", "train.py"], check=True)
 
-    # Validate the model
+    print("Starting validation...")
     subprocess.run(["python", "validate.py"], check=True)
 
-    # Deploy the model
+    print("Starting deployment...")
     subprocess.run(["python", "deploy.py"], check=True)
 
-    print("All tests passed.")
+    print("Pipeline completed successfully.")
 
 if __name__ == "__main__":
     test_pipeline()

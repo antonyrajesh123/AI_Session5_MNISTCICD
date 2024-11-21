@@ -4,12 +4,15 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 
 # Define the DNN
-class DNN(nn.Module):
+class SmallDNN(nn.Module):
     def __init__(self):
-        super(DNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)  # Convolutional Layer
-        self.fc1 = nn.Linear(16 * 28 * 28, 128)                           # Fully Connected Layer
-        self.fc2 = nn.Linear(128, 10)                                    # Output Layer
+        super(SmallDNN, self).__init__()
+        # Convolutional Layer: Input (1, 28, 28), Output (8, 14, 14)
+        self.conv1 = nn.Conv2d(1, 8, kernel_size=3, stride=1, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)  # Downsample by 2
+        # Fully Connected Layers
+        self.fc1 = nn.Linear(8 * 14 * 14, 32)  # Reduce hidden layer size
+        self.fc2 = nn.Linear(32, 10)          # Output layer
 
     def forward(self, x):
         x = torch.relu(self.conv1(x))  # Convolution + ReLU

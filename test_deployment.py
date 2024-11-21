@@ -1,6 +1,7 @@
 import torch
 from torchvision import datasets, transforms
 from train import SmallDNN
+import glob  # Import glob module
 
 def test_deployment():
     # Load the deployed model (using the most recent model saved with timestamp)

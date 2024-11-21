@@ -26,11 +26,11 @@ class SmallDNN(nn.Module):
 def train_model():
     # Download and prepare dataset
     transform = transforms.Compose([transforms.ToTensor()])
-    train_dataset = datasets.MNIST(root='./data', train=True, transform=transform, download=True)
+    train_dataset = datasets.MNIST(root='./data', train=True, transform=transform, download=False)
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
 
     # Initialize model, loss function, and optimizer
-    model = DNN()
+    model = SmallDNN()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 

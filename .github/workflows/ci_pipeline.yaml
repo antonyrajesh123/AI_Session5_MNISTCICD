@@ -31,3 +31,6 @@ jobs:
 
       - name: Deploy the model
         run: python deploy.py
+
+      - name: Test the deployment
+        run: python test_deployment.py

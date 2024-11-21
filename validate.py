@@ -1,9 +1,9 @@
 import torch
 from torchvision import datasets, transforms
-from train import DNN
+from train import SmallDNN
 
 def validate_model():
-    model = DNN()
+    model = SmallDNN()
     model.load_state_dict(torch.load("model.pth"))
     model.eval()
 

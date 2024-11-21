@@ -1,9 +1,9 @@
 import torch
 import time
-from train import DNN
+from train import SmallDNN
 
 def deploy_model():
-    model = DNN()
+    model = SmallDNN()
     model.load_state_dict(torch.load("model.pth"))
 
     # Save with timestamp

@@ -12,9 +12,10 @@ class DNN(nn.Module):
         self.fc2 = nn.Linear(128, 10)                                    # Output Layer
 
     def forward(self, x):
-        x = torch.relu(self.conv1(x))  # Apply ReLU after convolution
-        x = x.view(x.size(0), -1)      # Flatten the tensor
-        x = torch.relu(self.fc1(x))   # Apply ReLU after FC layer
+        x = torch.relu(self.conv1(x))  # Convolution + ReLU
+        x = self.pool(x)               # Pooling
+        x = x.view(x.size(0), -1)      # Flatten
+        x = torch.relu(self.fc1(x))   # Fully connected + ReLU
         x = self.fc2(x)               # Output layer
         return x
 

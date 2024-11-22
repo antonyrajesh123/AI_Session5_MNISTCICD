@@ -9,21 +9,21 @@ class SmallDNN(nn.Module):
     def __init__(self):
         super(SmallDNN, self).__init__()
         # Convolutional layers
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)  # Increased filters
-        self.bn1 = nn.BatchNorm2d(16)
+        self.conv1 = nn.Conv2d(1, 8, kernel_size=3, stride=1, padding=1)  # Fewer filters
+        self.bn1 = nn.BatchNorm2d(8)
         self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-        self.bn2 = nn.BatchNorm2d(32)
+        self.conv2 = nn.Conv2d(8, 16, kernel_size=3, stride=1, padding=1)
+        self.bn2 = nn.BatchNorm2d(16)
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.conv3 = nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1)
-        self.bn3 = nn.BatchNorm2d(32)
+        self.conv3 = nn.Conv2d(16, 16, kernel_size=3, stride=1, padding=1)  # Reduce filters
+        self.bn3 = nn.BatchNorm2d(16)
         self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
 
         # Fully connected layers
-        self.fc1 = nn.Linear(32 * 3 * 3, 64)
-        self.fc2 = nn.Linear(64, 10)
+        self.fc1 = nn.Linear(16 * 3 * 3, 32)  # Further reduce neurons
+        self.fc2 = nn.Linear(32, 10)
 
     def forward(self, x):
         x = torch.relu(self.bn1(self.conv1(x)))
@@ -42,13 +42,15 @@ def count_parameters(model):
     """Counts the number of trainable parameters in the model."""
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
+# Train the model
 # Validate parameter count
 model = SmallDNN()
 param_count = count_parameters(model)
 print(f"Total Parameters: {param_count}")
+
+# Assert parameter count
 assert param_count < 25000, f"Model has too many parameters: {param_count}"
 
-# Train the model
 def train_and_test_model():
     # Hyperparameters
     batch_size = 64

@@ -23,8 +23,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Train the model
-        run: python train.py
+#      - name: Train the model
+#        run: python train.py
+
+      - name: Train and Test Model
+        run: python train_and_test.py
 
       - name: Validate the model
         run: python validate.py

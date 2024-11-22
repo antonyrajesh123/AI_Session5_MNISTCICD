@@ -8,36 +8,45 @@ from torch.utils.data import DataLoader
 class SmallDNN(nn.Module):
     def __init__(self):
         super(SmallDNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)
-        self.bn1 = nn.BatchNorm2d(16)  # Batch Normalization
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+        # Convolutional layers
+        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)  # Increased filters
+        self.bn1 = nn.BatchNorm2d(16)
+        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
         self.bn2 = nn.BatchNorm2d(32)
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.fc1 = nn.Linear(32 * 7 * 7, 256)
-        self.fc2 = nn.Linear(256, 128)
-        self.fc3 = nn.Linear(128, 10)
+        self.conv3 = nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1)
+        self.bn3 = nn.BatchNorm2d(32)
+        self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
+
+        # Fully connected layers
+        self.fc1 = nn.Linear(32 * 3 * 3, 64)
+        self.fc2 = nn.Linear(64, 10)
 
     def forward(self, x):
         x = torch.relu(self.bn1(self.conv1(x)))
-        x = self.pool(x)
+        x = self.pool1(x)
         x = torch.relu(self.bn2(self.conv2(x)))
         x = self.pool2(x)
+        x = torch.relu(self.bn3(self.conv3(x)))
+        x = self.pool3(x)
 
         x = x.view(x.size(0), -1)  # Flatten
         x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc2(x)
         return x
 
-# Count parameters
 def count_parameters(model):
+    """Counts the number of trainable parameters in the model."""
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
+# Validate parameter count
 model = SmallDNN()
-print(f"Total Parameters: {count_parameters(model)}")
+param_count = count_parameters(model)
+print(f"Total Parameters: {param_count}")
+assert param_count < 25000, f"Model has too many parameters: {param_count}"
 
 # Train the model
 def train_and_test_model():

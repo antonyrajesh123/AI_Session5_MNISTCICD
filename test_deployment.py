@@ -1,6 +1,6 @@
 import torch
 from torchvision import datasets, transforms
-from train import SmallDNN
+from train_and_test import SmallDNN
 import glob  # Import glob module
 
 def test_deployment():

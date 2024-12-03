@@ -9,7 +9,7 @@ def test_deployment():
     latest_model = model_files[0]  # Get the most recent model
 
     model = SmallDNN()
-    model.load_state_dict(torch.load(latest_model))
+    model.load_state_dict(torch.load("model_*.pth"))
     model.eval()
 
     # Run inference on a sample image from MNIST test set

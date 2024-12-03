@@ -5,11 +5,11 @@ import glob  # Import glob module
 
 def test_deployment():
     # Load the deployed model (using the most recent model saved with timestamp)
-    model_files = sorted(glob.glob("model_*.pth"), reverse=True)  # Sort models by date
+    model_files = sorted(glob.glob("model.pth"), reverse=True)  # Sort models by date
     latest_model = model_files[0]  # Get the most recent model
 
     model = SmallDNN()
-    model.load_state_dict(torch.load("model_*.pth"))
+    model.load_state_dict(torch.load("model.pth"))
     model.eval()
 
     # Run inference on a sample image from MNIST test set
